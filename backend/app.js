@@ -2,13 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const postsRoutes = require("./routes/posts");
+const Post = require("./models/post");
 
 const app = express();
 
+const url = 'mongodb+srv://casas1010:tomaslola1@cluster0.teliend.mongodb.net/?retryWrites=true&w=majority'
+
 mongoose
   .connect(
-    "mongodb+srv://casas1010:tomaslola1@cluster0.fzb0uz9.mongodb.net/?retryWrites=true&w=majority"
+    url
   )
   .then(() => {
     console.log("Connected to database!");
@@ -28,11 +30,38 @@ app.use((req, res, next) => {
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+    "GET, POST, PATCH, DELETE, OPTIONS"
   );
   next();
 });
 
-app.use("/api/posts", postsRoutes);
+app.post("/api/posts", (req, res, next) => {
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content
+  });
+  post.save().then(createdPost => {
+    res.status(201).json({
+      message: "Post added successfully",
+      postId: createdPost._id
+    });
+  });
+});
+
+app.get("/api/posts", (req, res, next) => {
+  Post.find().then(documents => {
+    res.status(200).json({
+      message: "Posts fetched successfully!",
+      posts: documents
+    });
+  });
+});
+
+app.delete("/api/posts/:id", (req, res, next) => {
+  Post.deleteOne({ _id: req.params.id }).then(result => {
+    console.log(result);
+    res.status(200).json({ message: "Post deleted!" });
+  });
+});
 
 module.exports = app;
