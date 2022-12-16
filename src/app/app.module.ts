@@ -11,12 +11,15 @@ import { ErrorInterceptor } from "./error-interceptor";
 import { ErrorComponent } from "./error/error.component";
 import { AngularMaterialModule } from "./angular-material.module";
 import { PostsModule } from "./posts/posts.module";
+import { JobsModule } from './jobs/jobs.module';
+import { JobCreateComponent } from './jobs/job-create/job-create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ErrorComponent
+    ErrorComponent,
+    JobCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import { PostsModule } from "./posts/posts.module";
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
-    PostsModule
+    PostsModule,
+    JobsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
