@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: "create", component: PostCreateComponent, canActivate: [AuthGuard] },
   { path: "edit/:postId", component: PostCreateComponent, canActivate: [AuthGuard] },
   { path: "auth", loadChildren: "./auth/auth.module#AuthModule"},
-  { path: "createJob",component: JobCreateComponent}
+  { path: "jobCreate", component: JobCreateComponent},
 
 ];
 
