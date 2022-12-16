@@ -3,8 +3,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+const jobsRoutes = require("./routes/jobs");
 const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
+const { error } = require("console");
 
 const app = express();
 
@@ -15,8 +17,8 @@ mongoose
   .then(() => {
     console.log("Connected to database!");
   })
-  .catch(() => {
-    console.log("Connection failed!");
+  .catch((err) => {
+    console.log("Connection failed!: "+ JSON.stringify(err));
   });
 
 app.use(bodyParser.json());
@@ -36,6 +38,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use( (req,res,next)=>{
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  console.log('url being requested:  '+fullUrl);
+  next();
+})
+
+
+app.use("/api/jobs", jobsRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/user", userRoutes);
 
