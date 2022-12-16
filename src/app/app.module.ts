@@ -18,7 +18,6 @@ import { JobsModule } from './jobs/jobs.module';
     AppComponent,
     HeaderComponent,
     ErrorComponent,
-    
   ],
   imports: [
     BrowserModule,

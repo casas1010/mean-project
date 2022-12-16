@@ -4,9 +4,10 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 import { Subscription } from "rxjs";
 
 //import { PostsService } from "../posts.service";
-//import { Post } from "../post.model";
-import { mimeType } from "./mime-type.validator";
+import { Job } from "../job.model";
+import { mimeType } from "../../posts/post-create/mime-type.validator";
 import { AuthService } from "../../auth/auth.service";
+import { JobsService } from "../jobs.service";
 
 @Component({
   selector: "app-job-create",
@@ -16,7 +17,7 @@ import { AuthService } from "../../auth/auth.service";
 export class JobCreateComponent implements OnInit, OnDestroy {
   enteredTitle = "";
   enteredContent = "";
-  //post: Post;
+  job: Job;
   isLoading = false;
   form: FormGroup;
   imagePreview: string;
@@ -25,7 +26,7 @@ export class JobCreateComponent implements OnInit, OnDestroy {
   private authStatusSub: Subscription;
 
   constructor(
-    //public postsService: PostsService,
+    public jobsService:JobsService,
     public route: ActivatedRoute,
     private authService: AuthService
   ) {}
@@ -37,9 +38,6 @@ export class JobCreateComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       });
     this.form = new FormGroup({
-      title: new FormControl(null, {
-        validators: [Validators.required, Validators.minLength(3)]
-      }),
       content: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null, {
         validators: [Validators.required],
@@ -51,21 +49,19 @@ export class JobCreateComponent implements OnInit, OnDestroy {
         this.mode = "edit";
         this.postId = paramMap.get("postId");
         this.isLoading = true;
-        // this.postsService.getPost(this.postId).subscribe(postData => {
-        //   this.isLoading = false;
-        //   this.post = {
-        //     id: postData._id,
-        //     title: postData.title,
-        //     content: postData.content,
-        //     imagePath: postData.imagePath,
-        //     creator: postData.creator
-        //   };
-        //   this.form.setValue({
-        //     title: this.post.title,
-        //     content: this.post.content,
-        //     image: this.post.imagePath
-        //   });
-        // });
+        this.jobsService.getJob(this.postId).subscribe(postData => {
+          this.isLoading = false;
+          this.job = {
+            id: postData._id,
+            content: postData.content,
+            imagePath: postData.imagePath,
+            creator: postData.creator
+          };
+          this.form.setValue({
+            content: this.job.content,
+            image: this.job.imagePath
+          });
+        });
       } else {
         this.mode = "create";
         this.postId = null;
@@ -85,17 +81,20 @@ export class JobCreateComponent implements OnInit, OnDestroy {
   }
 
   onSavePost() {
+    console.log('onSavePost')
     if (this.form.invalid) {
+      console.log('form is not valid!')
       return;
     }
     this.isLoading = true;
     if (this.mode === "create") {
-      // this.postsService.addPost(
-      //   this.form.value.title,
-      //   this.form.value.content,
-      //   this.form.value.image
-      // );
+      console.log('on create')
+      this.jobsService.addJob(
+        this.form.value.content,
+        this.form.value.image
+      );
     } else {
+      console.log('not on create')
       // this.postsService.updatePost(
       //   this.postId,
       //   this.form.value.title,
