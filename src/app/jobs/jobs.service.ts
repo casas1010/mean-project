@@ -62,6 +62,8 @@ export class JobsService {
   }
 
   addJob(content: string, image: File) {
+    console.log('addJob()');
+    console.log('content: '+JSON.stringify(content));
     const jobData = new FormData();
     jobData.append("content", content);
     jobData.append("image", image, content);
@@ -78,7 +80,7 @@ export class JobsService {
       });
   }
 
-  updateJob(id: string, title: string, content: string, image: File | string) {
+  updateJob(id: string, title: string, content: string, image: File | string, state: string, substate:string) {
     let jobData: Job | FormData;
     if (typeof image === "object") {
       jobData = new FormData();
@@ -91,7 +93,9 @@ export class JobsService {
         id: id,
         content: content,
         imagePath: image,
-        creator: null
+        creator: null,
+        state: state,
+        substate: substate
       };
     }
     this.http

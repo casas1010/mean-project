@@ -3,5 +3,7 @@ export interface Job {
     content: string;
     imagePath: string;
     creator: string;
+    state: string;
+    substate: string;
   }
   

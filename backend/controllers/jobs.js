@@ -6,7 +6,9 @@ exports.createJob = (req, res, next) => {
   const post = new Job({
     content: req.body.content,
     imagePath: url + "/images/" + req.file.filename,
-    creator: req.userData.userId
+    creator: req.userData.userId,
+    state: 'new',
+    substate: 'new'
   });
   post
     .save()
@@ -36,7 +38,9 @@ exports.updateJob = (req, res, next) => {
     _id: req.body.id,
     content: req.body.content,
     imagePath: imagePath,
-    creator: req.userData.userId
+    creator: req.userData.userId,
+    state: req.userData.state,
+    substate:req.userData.substate,
   });
   Job.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     .then(result => {
