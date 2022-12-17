@@ -13,7 +13,7 @@ exports.createJob = (req, res, next) => {
     state: 'new',
     substate: 'new',
     address: req.body.address,
-    jobtype: JSON.parse(req.body.jobtype) // fix: not storing correctly
+    jobType: JSON.parse(req.body.jobtype) // fix: not storing correctly
   });
   post
     .save()
@@ -65,6 +65,7 @@ exports.updateJob = (req, res, next) => {
 };
 
 exports.getJobs = (req, res, next) => {
+  console.log('getJobs API hit')
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const postQuery = Job.find();
@@ -74,17 +75,21 @@ exports.getJobs = (req, res, next) => {
   }
   postQuery
     .then(documents => {
+      console.log('getting job')
       fetchedJobs = documents;
       return Job.count();
     })
     .then(count => {
+      console.log('job fetched succesful')
       res.status(200).json({
         message: "Jobs fetched successfully!",
-        posts: fetchedJobs,
+        jobs: fetchedJobs,
         maxJobs: count
       });
     })
     .catch(error => {
+      console.log('job fetched FAILED')
+
       res.status(500).json({
         message: "Fetching posts failed!"
       });

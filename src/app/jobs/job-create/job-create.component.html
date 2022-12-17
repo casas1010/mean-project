@@ -16,7 +16,7 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Job types</mat-label>
-        <mat-select [formControl]="jobTypes" multiple>
+        <mat-select formControlName="jobTypes" multiple>
           <mat-option *ngFor="let jobType of jobTypesArr" [value]="jobType">{{jobType}}</mat-option>
         </mat-select>
       </mat-form-field>

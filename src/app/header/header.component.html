@@ -5,6 +5,9 @@
   <span class="spacer"></span>
   <ul>
     <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/jobList" routerLinkActive="mat-accent">Job list</a>
+    </li>
+    <li *ngIf="userIsAuthenticated">
       <a mat-button routerLink="/jobCreate" routerLinkActive="mat-accent">Create job</a>
     </li>
     <li *ngIf="userIsAuthenticated">

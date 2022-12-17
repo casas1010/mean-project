@@ -17,6 +17,7 @@ export class JobsService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getJobs(jobsPerPage: number, currentPage: number) {
+    console.log('getJobs() ')
     const queryParams = `?pagesize=${jobsPerPage}&page=${currentPage}`;
     this.http
       .get<{ message: string; jobs: any; maxJobs: number }>(
@@ -24,10 +25,10 @@ export class JobsService {
       )
       .pipe(
         map(jobData => {
+          
           return {
             jobs: jobData.jobs.map(job => {
               return {
-                title: job.title,
                 content: job.content,
                 id: job._id,
                 imagePath: job.imagePath,

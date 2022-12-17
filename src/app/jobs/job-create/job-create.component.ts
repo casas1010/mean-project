@@ -27,7 +27,7 @@ export class JobCreateComponent implements OnInit, OnDestroy {
   private mode = "create";
   private postId: string;
   private authStatusSub: Subscription;
-  jobTypes = new FormControl(""); // how do i install this properly? if I comment out this whole line, i get an error
+  //jobTypes = new FormControl(""); // how do i install this properly? if I comment out this whole line, i get an error
   jobTypesArr: string[];
 
   constructor(
@@ -49,8 +49,8 @@ export class JobCreateComponent implements OnInit, OnDestroy {
 
     this.authenticationSetup();
     this.form = new FormGroup({
-      jobTypes: this.jobTypes, // this line works, but I feel there is a better way of doing this
-      // jobTypes: new FormControl(''), // i wan to use this line, but it does not work when i try to print the content of the form later on
+     // jobTypes: this.jobTypes, // this line works, but I feel there is a better way of doing this
+       jobTypes: new FormControl(''), // i wan to use this line, but it does not work when i try to print the content of the form later on
       content: new FormControl(null, { validators: [Validators.required] }),
       address: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null, {
