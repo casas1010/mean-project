@@ -2,13 +2,18 @@ const Job = require("../models/job");
 
 exports.createJob = (req, res, next) => {
   console.log('create job api hit')
+  console.log(`req.body.jobtype: ${req.body.jobtype}`)
+  console.log(`${typeof req.body.jobtype}`)
+  console.log(JSON.parse(req.body.jobtype)[0])
   const url = req.protocol + "://" + req.get("host");
   const post = new Job({
     content: req.body.content,
     imagePath: url + "/images/" + req.file.filename,
     creator: req.userData.userId,
     state: 'new',
-    substate: 'new'
+    substate: 'new',
+    address: req.body.address,
+    jobtype: JSON.parse(req.body.jobtype) // fix: not storing correctly
   });
   post
     .save()
@@ -17,13 +22,15 @@ exports.createJob = (req, res, next) => {
         message: "Job added successfully",
         post: {
           ...createdJob,
+          
           id: createdJob._id
         }
       });
+   
     })
     .catch(error => {
       res.status(500).json({
-        message: "Creating a post failed!"
+        message: JSON.stringify(error)
       });
     });
 };
@@ -40,7 +47,7 @@ exports.updateJob = (req, res, next) => {
     imagePath: imagePath,
     creator: req.userData.userId,
     state: req.userData.state,
-    substate:req.userData.substate,
+    substate: req.userData.substate,
   });
   Job.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     .then(result => {

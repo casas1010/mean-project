@@ -58,17 +58,23 @@ export class JobsService {
       content: string;
       imagePath: string;
       creator: string;
+      state: string;
+      substate:string;
+      jobType:string[];
     }>(BACKEND_URL + id);
   }
 
-  addJob(content: string, image: File) {
-    console.log('addJob()');
-    console.log('content: '+JSON.stringify(content));
+  addJob(content: string, image: File, address: string, jobTypes: string[]) {
+    console.log('addJob() service');
+
+    
+    const jobTypesStr = JSON.stringify(jobTypes);
     const jobData = new FormData();
+    jobData.append("address", address);
     jobData.append("content", content);
     jobData.append("image", image, content);
-    console.log('trying to create job from fe');
-    console.log('url trying to connect to make post request to:'+BACKEND_URL)
+    jobData.append("jobtype",jobTypesStr);
+
     this.http
       .post<{ message: string; job: Job }>(
         BACKEND_URL,
@@ -89,14 +95,14 @@ export class JobsService {
       jobData.append("content", content);
       jobData.append("image", image, title);
     } else {
-      jobData = {
-        id: id,
-        content: content,
-        imagePath: image,
-        creator: null,
-        state: state,
-        substate: substate
-      };
+      // jobData = {
+      //   id: id,
+      //   content: content,
+      //   imagePath: image,
+      //   creator: null,
+      //   state: state,
+      //   substate: substate,
+      // };
     }
     this.http
       .put(BACKEND_URL + id, jobData)

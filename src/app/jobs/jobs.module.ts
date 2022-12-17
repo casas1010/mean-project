@@ -6,6 +6,7 @@ import { RouterModule } from "@angular/router";
 import { JobCreateComponent } from "./job-create/job-create.component";
 //import { JobListComponent } from "./post-list/post-list.component";
 import { AngularMaterialModule } from "../angular-material.module";
+import { MatSelectModule } from "@angular/material";
 
 @NgModule({
   declarations: [JobCreateComponent, ],
@@ -13,7 +14,7 @@ import { AngularMaterialModule } from "../angular-material.module";
     CommonModule,
     ReactiveFormsModule,
     AngularMaterialModule,
-    RouterModule
+    RouterModule,MatSelectModule
   ]
 })
 export class JobsModule {}

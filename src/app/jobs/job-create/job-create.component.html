@@ -6,11 +6,28 @@
       <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
         <img [src]="imagePreview" [alt]="form.value.title">
       </div>
+
+      
       <mat-form-field>
         <textarea matInput rows="4" formControlName="content" placeholder="Job Content"></textarea>
         <mat-error *ngIf="form.get('content').invalid">Please enter a post title.</mat-error>
       </mat-form-field>
 
+
+      <mat-form-field appearance="fill">
+        <mat-label>Job types</mat-label>
+        <mat-select [formControl]="jobTypes" multiple>
+          <mat-option *ngFor="let jobType of jobTypesArr" [value]="jobType">{{jobType}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+
+      <mat-form-field>
+        <textarea matInput rows="4" formControlName="address" placeholder="Job address"></textarea>
+        <mat-error *ngIf="form.get('address').invalid">Please enter a address</mat-error>
+      </mat-form-field>
+    
       <div class="row-buttons" >
         <button mat-raised-button color="accent" type="submit">Save Job</button>
         <div>
